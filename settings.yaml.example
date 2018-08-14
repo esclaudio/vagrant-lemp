@@ -1,0 +1,19 @@
+---
+ip: "192.168.10.10"
+memory: 1024
+pyafipws: no
+
+networks:
+  - type: "public"
+    ip: "192.168.2.150"
+
+folders:
+  - map: "."
+    to: "/home/vagrant"
+
+sites:
+  - map: vagrant.dev
+    to: /var/www/html
+    aliases:
+      - map: app
+        to: /home/vagrant/www/app/public
