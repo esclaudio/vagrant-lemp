@@ -1,14 +1,10 @@
 #!/bin/bash
 
-function package_exists() {
-    dpkg -l "$1" &> /dev/null
-}
-
 MYSQL_USER=$1
 
-if ! package_exists 'apache2' ; then
-    apt-get purge -y apache2 apache2-utils apache2.2-bin apache2-common
-fi
+# Elimino Apache
+
+apt-get purge -y apache2
 
 if [ -d /etc/apache2 ] ; then
     rm -rf /etc/apache2
@@ -16,69 +12,81 @@ fi
 
 # Nginx
 
-if ! package_exists 'nginx' ; then
+if [ ! -f /home/vagrant/.nginx ] ; then
     apt-get install -y nginx
+    touch /home/vagrant/.nginx    
 fi
 
 # MySQL
 
-if ! package_exists 'mariadb-server' ; then
+if [ ! -f /home/vagrant/.mariadb ] ; then
     apt-get install -y mariadb-server mariadb-client
+    touch /home/vagrant/.mariadb
 fi
 
 # PHP
 
-if ! package_exists 'php' ; then
+if [ ! -f /home/vagrant/.php7 ] ; then
     apt-get install -y php php-fpm php-bcmath php-bz2 php-cli php-curl php-intl php-json php-mbstring php-opcache php-soap php-sqlite3 php-xml php-xsl php-zip php-mysql php-imagick php-gd
+    touch /home/vagrant/.php7
 fi
 
 # Python 3 (pip)
 
-if ! package_exists 'python3' ; then
+if [ ! -f /home/vagrant/.python3 ] ; then
     apt-get install -y python3-pip
+    touch /home/vagrant/.python3
 fi
 
 # WKHtml
 
-if [ ! -f /usr/bin/wkhtmltopdf ]; then
+if [ ! -f /home/vagrant/.wkhtml ] ; then
     apt-get install libxrender1 fontconfig xvfb
     wget https://downloads.wkhtmltopdf.org/0.12/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz -P /tmp/
     cd /opt/
     tar xf /tmp/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
     ln -s /opt/wkhtmltox/bin/wkhtmltopdf /usr/bin/wkhtmltopdf
+    touch /home/vagrant/.wkhtml
 fi
 
 # LibreOffice
-if ! package_exists 'libreoffice' ; then
+if [ ! -f /home/vagrant/.libreoffice ] ; then
     apt-get install -y libreoffice-writer libreoffice-calc unoconv
+    touch /home/vagrant/.libreoffice
 fi
 
 # ImageMagick
 
-if ! package_exists 'imagemagick' ; then
+if [ ! -f /home/vagrant/.imagemagick ] ; then
     apt-get install -y imagemagick
+    touch /home/vagrant/.imagemagick
 fi
 
 # Composer
 
-if [ ! -f /usr/local/bin/composer ]; then
+if [ ! -f /home/vagrant/.composer ] ; then
     apt-get install -y curl unzip
     curl -sS https://getcomposer.org/installer -o composer-setup.php
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+    touch /home/vagrant/.composer
 fi
 
 # Node
 
-if ! package_exists 'nodejs' ; then
+if [ ! -f /home/vagrant/.nodejs ] ; then
     curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh
     bash nodesource_setup.sh
     apt-get install -y nodejs build-essential
     apt-get install -y npm
+    touch /home/vagrant/.nodejs
 fi
 
 # Gulp
 
-npm install gulp-cli -g
+if [ ! -f /home/vagrant/.gulp ] ; then
+    npm install gulp-cli -g
+    touch /home/vagrant/.gulp
+fi
 
 # npm install --no-bin-links # Vagrant on top of Windows. You cannot use symlinks.
 
@@ -100,6 +108,8 @@ mysql -u root -e "GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_USER'@'%' WITH GRANT OP
 
 mysql -u root -e "FLUSH PRIVILEGES;"
 
+# Reinicio MySQL
+
 service mysql restart
 
 # Habilito a Nginx a escribir en var/www
@@ -112,8 +122,11 @@ chown -R www-data:www-data /var/www
 rm /etc/nginx/sites-available/*
 rm /etc/nginx/sites-enabled/*
 
-# Reinicio Nginx para que la configuración tome efecto
+# Reinicio nginx
 
-apt-get autoremove
+service nginx restart
+
+# Autoremove
+
+apt-get autoremove -y
 apt-get autoclean
-apt-get -f install

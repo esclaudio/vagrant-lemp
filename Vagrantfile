@@ -65,6 +65,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
             end
             config.vm.provision :shell, :args => [site["map"], site["to"], aliases ||= ""], path: "scripts/sites.sh"
         end
+
+        config.vm.provision :shell, inline: "service nginx restart"
+    end
+
+    if settings.has_key?("databases")
+        settings["databases"].each do |database|
+            config.vm.provision :shell, :args => [database], path: "scripts/databases.sh"
+        end
     end
 
     # PyAfipWS

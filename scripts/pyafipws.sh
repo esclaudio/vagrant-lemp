@@ -1,33 +1,34 @@
 #!/bin/bash
 
-function package_exists() {
-    dpkg -l "$1" &> /dev/null
-}
-
 # PyAfipWs solo funciona con Python 2 :(
 
-if ! which 'python' &> /dev/null ; then
+if [ ! -f /home/vagrant/.python2 ] ; then
     apt-get install -y python python-pip
+    touch /home/vagrant/.python2
 fi
 
-if ! which 'python-dev' &> /dev/null ; then
+if [ ! -f /home/vagrant/.pythondev ] ; then
     apt-get install -y python-dev
+    touch /home/vagrant/.pythondev
 fi
 
 # Para compilar M2Crypto son necesarios swig y libssl-dev
 
-if ! package_exists 'swig' ; then
+if [ ! -f /home/vagrant/.swig ] ; then
 	apt-get install -y swig
+    touch /home/vagrant/.swig
 fi
 
-if ! package_exists 'libssl-dev' ; then
+if [ ! -f /home/vagrant/.libssldev ] ; then
 	apt-get install -y libssl-dev
+    touch /home/vagrant/.libssldev
 fi
 
 # Entorno virtual para no "contaminar" el espacio global
 
-if ! which 'virtualenv' &> /dev/null ; then
+if [ ! -f /home/vagrant/.virtualenv ] ; then
     apt-get install -y virtualenv
+    touch /home/vagrant/.virtualenv
 fi
 
 folder="/home/vagrant/pyafipws"

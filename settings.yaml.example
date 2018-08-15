@@ -11,6 +11,9 @@ folders:
   - map: "."
     to: "/home/vagrant"
 
+databases:
+  - vagrant
+  
 sites:
   - map: vagrant.dev
     to: /var/www/html
