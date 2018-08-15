@@ -4,25 +4,27 @@ site=$1
 folder=$2
 
 declare -A aliases=$3
-aliasesTXT=""
+site_aliases=""
 if [ -n "$3" ]; then
     for element in "${!aliases[@]}"
     do
-        aliasesTXT="${aliasesTXT}
-            location /${element} {
-                alias ${aliases[$element]};
-                try_files \$uri \$uri/ @${element};
+        site_aliases="${site_aliases}
+        # Alias ${element}
 
-                location ~ \.php$ {
-                    include snippets/fastcgi-php.conf;
-                    fastcgi_param SCRIPT_FILENAME \$request_filename;
-                    fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
-                }
-            }
+        location /${element} {
+            alias ${aliases[$element]};
+            try_files \$uri \$uri/ @${element};
 
-            location @${element} {
-                rewrite /${element}/(.*)$ /${element}/index.php?/\$1 last;
+            location ~ \.php$ {
+                include snippets/fastcgi-php.conf;
+                fastcgi_param SCRIPT_FILENAME \$request_filename;
+                fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
             }
+        }
+
+        location @${element} {
+            rewrite /${element}/(.*)$ /${element}/index.php?/\$1 last;
+        }
         "
     done
 fi
@@ -41,7 +43,7 @@ echo "server {
             try_files \$uri \$uri/ /index.php\$is_args\$args;
         }
 
-        ${aliasesTXT}
+        ${site_aliases}
 
         location ~ \.php$ {
             include snippets/fastcgi-php.conf;
