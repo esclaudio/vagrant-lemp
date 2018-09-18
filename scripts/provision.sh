@@ -88,6 +88,12 @@ if [ ! -f /home/vagrant/.gulp ] ; then
     touch /home/vagrant/.gulp
 fi
 
+# Redis
+
+if [ ! -f /home/vagrant/.redis ] ; then
+    apt-get install -y redis-server
+fi
+
 # npm install --no-bin-links # Vagrant on top of Windows. You cannot use symlinks.
 
 # Acceso remoto a MySQL
