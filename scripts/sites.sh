@@ -45,9 +45,24 @@ echo "server {
 
         ${site_aliases}
 
+        location = /favicon.ico { access_log off; log_not_found off; }
+        location = /robots.txt  { access_log off; log_not_found off; }
+        location /img/ { access_log off; log_not_found off; }
+
+        access_log off;
+        error_log  /var/log/nginx/${site}-error.log error;
+        sendfile off;
+        client_max_body_size 100m;
+
         location ~ \.php$ {
             include snippets/fastcgi-php.conf;
             fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+            fastcgi_intercept_errors off;
+            fastcgi_buffer_size 16k;
+            fastcgi_buffers 4 16k;
+            fastcgi_connect_timeout 300;
+            fastcgi_send_timeout 300;
+            fastcgi_read_timeout 300;
         }
 
         location ~ /\.ht {
@@ -59,6 +74,8 @@ echo "server {
 
         location ~* (.+)\.(?:\d+)\.(min.js|min.css)$ {
             try_files \$uri \$1.\$2;
+            access_log off;
+            log_not_found off;
         }
 }" > /etc/nginx/sites-available/$site.conf
 
