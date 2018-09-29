@@ -3,12 +3,12 @@
 
 require 'yaml'
 
-Vagrant.require_version ">= 1.6.0"
-VAGRANTFILE_API_VERSION = "2"
+VAGRANTFILE_API_VERSION ||= "2"
 
-confDir = File.expand_path(File.dirname(__FILE__))
-
+confDir = confDir ||= File.expand_path(File.dirname(__FILE__))
 settings = YAML.load_file(confDir + '/settings.yaml')
+
+Vagrant.require_version ">= 2.1.0"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.box = "bento/ubuntu-18.04"
