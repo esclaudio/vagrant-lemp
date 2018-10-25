@@ -86,8 +86,14 @@ if [ ! -f /home/vagrant/.provisioned/.nodejs ] ; then
     curl -sL https://deb.nodesource.com/setup_6.x -o nodesource_setup.sh
     bash nodesource_setup.sh
     apt-get install -y nodejs build-essential
-    apt-get install -y npm
     touch /home/vagrant/.provisioned/.nodejs
+fi
+
+# NPM / Yarn
+if [ ! -f /home/vagrant/.provisioned/.nodejs ] ; then
+    apt-get install -y npm
+    apt-get install -y yarn
+    touch /home/vagrant/.provisioned/.npm
 fi
 
 # Gulp
@@ -101,6 +107,24 @@ fi
 
 if [ ! -f /home/vagrant/.provisioned/.redis ] ; then
     apt-get install -y redis-server
+    touch /home/vagrant/.provisioned/.redis
+fi
+
+# XDebug
+
+if [ ! -f /home/vagrant/.provisioned/.xdebug ] ; then
+    apt-get install -y xdebug
+
+    if [ -f /etc/php/7.2/fpm/conf.d/20-xdebug.ini ] ; then
+        echo "
+            xdebug.remote_enable = 1
+            xdebug.remote_connect_back = 1
+            xdebug.remote_port = 9000
+            xdebug.max_nesting_level = 512
+        " >> /etc/php/7.2/fpm/conf.d/20-xdebug.ini
+    fi
+    
+    touch /home/vagrant/.provisioned/.xdebug
 fi
 
 # npm install --no-bin-links # Vagrant on top of Windows. You cannot use symlinks.
