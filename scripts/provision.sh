@@ -2,7 +2,9 @@
 
 MYSQL_USER=$1
 
-mkdir /home/vagrant/.provisioned
+if [ ! -d /home/vagrant/.provisioned ]; then
+    mkdir /home/vagrant/.provisioned
+fi
 
 apt-get update
 
@@ -30,6 +32,12 @@ fi
 
 if [ ! -f /home/vagrant/.provisioned/.mariadb ] ; then
     apt-get install -y mariadb-server mariadb-client
+    
+    echo "
+        [mysqld] 
+        bind-address = ::
+    " >> /etc/mysql/mariadb.cnf
+
     touch /home/vagrant/.provisioned/.mariadb
 fi
 
@@ -50,11 +58,11 @@ fi
 # WKHtml
 
 if [ ! -f /home/vagrant/.provisioned/.wkhtml ] ; then
-    apt-get install libxrender1 fontconfig xvfb
-    wget https://downloads.wkhtmltopdf.org/0.12/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz -P /tmp/
-    cd /opt/
-    tar xf /tmp/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz
-    ln -s /opt/wkhtmltox/bin/wkhtmltopdf /usr/bin/wkhtmltopdf
+    apt-get install libxrender1 fontconfig xvfb xfonts-75dpi
+    wget https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
+    sudo dpkg -i wkhtmltox_0.12.5-1.bionic_amd64.deb
+    sudo ln -s /usr/local/bin/wkhtmltopdf /usr/bin
+	sudo ln -s /usr/local/bin/wkhtmltoimage /usr/bin
     touch /home/vagrant/.provisioned/.wkhtml
 fi
 
@@ -131,7 +139,7 @@ fi
 
 # Acceso remoto a MySQL
 
-find /etc/mysql -type f -name "*.cnf" -exec sed -i '/^bind-address/s/bind-address.*=.*/bind-address = 0.0.0.0/' {} +
+find /etc/mysql -type f -name "*.cnf" -exec sed -i '/^bind-address/s/bind-address.*=.*/bind-address = ::/' {} +
 
 # Usuario local de MySQL
 
