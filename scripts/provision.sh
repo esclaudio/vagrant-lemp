@@ -2,25 +2,10 @@
 
 MYSQL_USER=$1
 
+sudo apt update
+
 if [ ! -d /home/vagrant/.provisioned ]; then
     mkdir /home/vagrant/.provisioned
-    DEBIAN_FRONTEND=noninteractive apt-get update
-fi
-
-
-# Elimino Apache
-
-if [ -d /etc/apache2 ] ; then
-    DEBIAN_FRONTEND=noninteractive apt-get purge -yq apache2
-    rm -rf /etc/apache2
-fi
-
-if [ ! -f /home/vagrant/.provisioned/.ohmyzsh ] ; then
-    echo "Installig ZSH"
-
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq zsh
-    sh -c "$(wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O -)"
-    touch /home/vagrant/.provisioned/.ohmyzsh
 fi
 
 # Nginx
