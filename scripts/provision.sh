@@ -41,14 +41,14 @@ if [ ! -f /home/vagrant/.provisioned/.php7 ] ; then
     touch /home/vagrant/.provisioned/.php7
 fi
 
-# Python 3 (pip)
+# # Python 3 (pip)
 
-if [ ! -f /home/vagrant/.provisioned/.python3 ] ; then
-    echo "Installig PYTHON"
+# if [ ! -f /home/vagrant/.provisioned/.python3 ] ; then
+#     echo "Installig PYTHON"
 
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq python3-pip
-    touch /home/vagrant/.provisioned/.python3
-fi
+#     DEBIAN_FRONTEND=noninteractive apt-get install -yq python3-pip
+#     touch /home/vagrant/.provisioned/.python3
+# fi
 
 # WKHtml
 
@@ -57,7 +57,7 @@ if [ ! -f /home/vagrant/.provisioned/.wkhtml ] ; then
 
     DEBIAN_FRONTEND=noninteractive apt-get install -yq libxrender1 fontconfig xvfb xfonts-75dpi
 
-    wget https://downloads.wkhtmltopdf.org/0.12/0.12.5/wkhtmltox_0.12.5-1.bionic_amd64.deb
+    wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox_0.12.6-1.focal_amd64.deb
     sudo dpkg -i wkhtmltox_0.12.5-1.bionic_amd64.deb
     sudo ln -s /usr/local/bin/wkhtmltopdf /usr/bin
 	sudo ln -s /usr/local/bin/wkhtmltoimage /usr/bin
@@ -98,27 +98,27 @@ fi
 
 # Node
 
-if [ ! -f /home/vagrant/.provisioned/.nodejs ] ; then
-    echo "Installig NODE"
+# if [ ! -f /home/vagrant/.provisioned/.nodejs ] ; then
+#     echo "Installig NODE"
 
-    curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
+#     curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
     
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq nodejs
+#     DEBIAN_FRONTEND=noninteractive apt-get install -yq nodejs
 
-    touch /home/vagrant/.provisioned/.nodejs
-fi
+#     touch /home/vagrant/.provisioned/.nodejs
+# fi
 
 # NPM / Yarn / Gulp
 
-if [ ! -f /home/vagrant/.provisioned/.npm ] ; then
-    echo "Installig YARN/GULP"
+# if [ ! -f /home/vagrant/.provisioned/.npm ] ; then
+#     echo "Installig YARN/GULP"
 
-    npm install -g npm
-    npm install -g yarn
-    npm install -g gulp-cli
+#     npm install -g npm
+#     npm install -g yarn
+#     npm install -g gulp-cli
     
-    touch /home/vagrant/.provisioned/.npm
-fi
+#     touch /home/vagrant/.provisioned/.npm
+# fi
 
 # Redis
 
@@ -136,13 +136,13 @@ if [ ! -f /home/vagrant/.provisioned/.xdebug ] ; then
 
     DEBIAN_FRONTEND=noninteractive apt-get install -yq php-xdebug
 
-    if [ -f /etc/php/7.2/fpm/conf.d/20-xdebug.ini ] ; then
+    if [ -f /etc/php/7.4/fpm/conf.d/20-xdebug.ini ] ; then
         echo "
             xdebug.remote_enable = 1
             xdebug.remote_connect_back = 1
             xdebug.remote_port = 9000
             xdebug.max_nesting_level = 512
-        " >> /etc/php/7.2/fpm/conf.d/20-xdebug.ini
+        " >> /etc/php/7.4/fpm/conf.d/20-xdebug.ini
     fi
     
     touch /home/vagrant/.provisioned/.xdebug

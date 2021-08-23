@@ -18,7 +18,7 @@ if [ -n "$3" ]; then
             location ~ \.php$ {
                 include snippets/fastcgi-php.conf;
                 fastcgi_param SCRIPT_FILENAME \$request_filename;
-                fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+                fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
             }
         }
 
@@ -56,7 +56,7 @@ echo "server {
 
         location ~ \.php$ {
             include snippets/fastcgi-php.conf;
-            fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+            fastcgi_pass unix:/var/run/php/php7.4-fpm.sock;
             fastcgi_intercept_errors off;
             fastcgi_buffer_size 16k;
             fastcgi_buffers 4 16k;

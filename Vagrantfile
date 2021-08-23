@@ -11,10 +11,12 @@ settings = YAML.load_file(confDir + '/settings.yaml')
 Vagrant.require_version ">= 2.1.0"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-    config.vm.box = "bento/ubuntu-18.04"
+    config.vm.box = "bento/ubuntu-20.04"
 
     config.vm.provider :virtualbox do |vb|
         vb.memory = settings["memory"]
+        vb.cpus = settings["cpus"]
+
         vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
         vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
         vb.customize ["modifyvm", :id, "--usb", "off"]

@@ -1,11 +1,12 @@
 ---
 ip: "192.168.10.10"
-memory: 1024
-pyafipws: no
+memory: 4096
+cpus: 2
+pyafipws: false
 
-networks:
-  - type: "public"
-    ip: "192.168.2.150"
+# networks:
+#   - type: "public"
+#     ip: "192.168.2.150"
 
 folders:
   - map: "."

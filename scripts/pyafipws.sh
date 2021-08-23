@@ -2,14 +2,14 @@
 
 # PyAfipWs solo funciona con Python 2 :(
 
-if [ ! -f /home/vagrant/.provisioned/.python2 ] ; then
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq python python-pip
-    touch /home/vagrant/.provisioned/.python2
+if [ ! -f /home/vagrant/.provisioned/.python27 ] ; then
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq python2 python2-pip
+    touch /home/vagrant/.provisioned/.python27
 fi
 
-if [ ! -f /home/vagrant/.provisioned/.pythondev ] ; then
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq python-dev
-    touch /home/vagrant/.provisioned/.pythondev
+if [ ! -f /home/vagrant/.provisioned/.python27dev ] ; then
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq python2-dev
+    touch /home/vagrant/.provisioned/.python27dev
 fi
 
 # Para compilar M2Crypto son necesarios swig y libssl-dev
@@ -31,8 +31,8 @@ if [ ! -f /home/vagrant/.provisioned/.virtualenv ] ; then
     touch /home/vagrant/.provisioned/.virtualenv
 fi
 
-folder="/home/vagrant/pyafipws"
-env="/home/vagrant/pyafipenv"
+folder="/home/vagrant/pyafipws27"
+env="/home/vagrant/pyafipenv27"
 user="vagrant"
 
 if [ ! -d "$folder" ]; then
@@ -51,7 +51,7 @@ else
 fi
 
 if [ ! -d "$env" ]; then
-    virtualenv "$env" -p python
+    virtualenv "$env" -p python2
 
     if [ -d "$env" ]; then
         source "$env/bin/activate"
