@@ -17,10 +17,10 @@ if [ ! -f /home/vagrant/.provisioned/.nginx ] ; then
     touch /home/vagrant/.provisioned/.nginx
 fi
 
-# MySQL
+# MARIADB
 
 if [ ! -f /home/vagrant/.provisioned/.mariadb ] ; then
-    echo "Installig MYSQL"
+    echo "Installig MARIADB"
 
     DEBIAN_FRONTEND=noninteractive apt-get install -yq mariadb-server mariadb-client
     
