@@ -42,6 +42,7 @@ if [ ! -f /home/vagrant/.provisioned/.php7 ] ; then
 fi
 
 # Puppeteer
+
 if [ ! -f /home/vagrant/.provisioned/.puppeteer ] ; then
     echo "Installig Puppeteer"
 
