@@ -99,7 +99,7 @@ fi
 if [ ! -f /home/vagrant/.provisioned/.redis ] ; then
     echo "Installig REDIS"
 
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq redis-server
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq redis-server php-redis
     touch /home/vagrant/.provisioned/.redis
 fi
 
