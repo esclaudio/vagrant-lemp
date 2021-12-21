@@ -129,6 +129,10 @@ if [ ! -f /home/vagrant/.provisioned/.xdebug ] ; then
     touch /home/vagrant/.provisioned/.xdebug
 fi
 
+# Default PHP version
+
+update-alternatives --set php /usr/bin/php7.4
+
 # npm install --no-bin-links # Vagrant on top of Windows. You cannot use symlinks.
 
 # Acceso remoto a MySQL
