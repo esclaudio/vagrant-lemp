@@ -65,7 +65,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 end
                 aliases += " )"
             end
-            config.vm.provision :shell, :args => [site["map"], site["to"], aliases ||= ""], path: "scripts/sites.sh"
+            config.vm.provision :shell, :args => [site["map"], site["to"], aliases ||= "", site["php"] ||= "8.1"], path: "scripts/sites.sh"
         end
 
         config.vm.provision :shell, inline: "service nginx restart"

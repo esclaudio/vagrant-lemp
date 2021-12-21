@@ -2,7 +2,7 @@
 
 MYSQL_USER=$1
 
-sudo apt update
+sudo apt-get update
 
 if [ ! -d /home/vagrant/.provisioned ]; then
     mkdir /home/vagrant/.provisioned
@@ -37,8 +37,15 @@ fi
 if [ ! -f /home/vagrant/.provisioned/.php7 ] ; then
     echo "Installig PHP"
 
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq php php-fpm php-bcmath php-bz2 php-cli php-curl php-intl php-json php-mbstring php-opcache php-soap php-sqlite3 php-xml php-xsl php-zip php-mysql php-imagick php-gd
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq php php-{bcmath,xml,fpm,mysql,zip,intl,ldap,gd,imagick,bcmath,cli,bz2,curl,mbstring,pgsql,opcache,soap,cgi,sqlite3}
     touch /home/vagrant/.provisioned/.php7
+fi
+
+if [ ! -f /home/vagrant/.provisioned/.php8 ] ; then
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq software-properties-common && add-apt-repository ppa:ondrej/php -y
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq php8.1-{bcmath,xml,fpm,mysql,zip,intl,ldap,gd,imagick,bcmath,cli,bz2,curl,mbstring,pgsql,opcache,soap,cgi}
+
+    touch /home/vagrant/.provisioned/.php8
 fi
 
 # Node
