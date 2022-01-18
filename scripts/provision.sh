@@ -17,19 +17,19 @@ if [ ! -f /home/vagrant/.provisioned/.nginx ] ; then
     touch /home/vagrant/.provisioned/.nginx
 fi
 
-# MARIADB
+# MYSQL
 
-if [ ! -f /home/vagrant/.provisioned/.mariadb ] ; then
-    echo "Installig MARIADB"
+if [ ! -f /home/vagrant/.provisioned/.mysql ] ; then
+    echo "Installig MYSQL"
 
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq mariadb-server mariadb-client
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq mysql-server mysql-client
     
     echo "
         [mysqld] 
         bind-address = ::
-    " >> /etc/mysql/mariadb.cnf
+    " >> /etc/mysql/mysql.cnf
 
-    touch /home/vagrant/.provisioned/.mariadb
+    touch /home/vagrant/.provisioned/.mysql
 fi
 
 # PHP
@@ -106,7 +106,10 @@ fi
 if [ ! -f /home/vagrant/.provisioned/.redis ] ; then
     echo "Installig REDIS"
 
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq redis-server php-redis
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq redis-server php-redis php7-redis
+    DEBIAN_FRONTEND=noninteractive phpenmod -v 7.4 -s ALL redis
+    DEBIAN_FRONTEND=noninteractive phpenmod -v 8.0 -s ALL redis
+    DEBIAN_FRONTEND=noninteractive phpenmod -v 8.1 -s ALL redis
     touch /home/vagrant/.provisioned/.redis
 fi
 
