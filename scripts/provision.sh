@@ -106,7 +106,7 @@ fi
 if [ ! -f /home/vagrant/.provisioned/.redis ] ; then
     echo "Installig REDIS"
 
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq redis-server php-redis php7-redis
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq redis-server php-redis php7.4-redis
     DEBIAN_FRONTEND=noninteractive phpenmod -v 7.4 -s ALL redis
     DEBIAN_FRONTEND=noninteractive phpenmod -v 8.0 -s ALL redis
     DEBIAN_FRONTEND=noninteractive phpenmod -v 8.1 -s ALL redis
