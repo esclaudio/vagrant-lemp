@@ -23,11 +23,6 @@ if [ ! -f /home/vagrant/.provisioned/.mysql ] ; then
     echo "Installig MYSQL"
 
     DEBIAN_FRONTEND=noninteractive apt-get install -yq mysql-server mysql-client
-    
-    echo "
-        [mysqld] 
-        bind-address = ::
-    " >> /etc/mysql/mysql.cnf
 
     touch /home/vagrant/.provisioned/.mysql
 fi
@@ -134,7 +129,7 @@ fi
 
 # Default PHP version
 
-update-alternatives --set php /usr/bin/php7.4
+update-alternatives --set php /usr/bin/php8.1
 
 # npm install --no-bin-links # Vagrant on top of Windows. You cannot use symlinks.
 
