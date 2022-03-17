@@ -43,7 +43,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     if settings.has_key?("folders")
         settings["folders"].each do |folder|
             if folder.has_key?("nfs") && folder["nfs"]
-                config.vm.synced_folder folder["map"], folder["to"], type: "nfs", mount_options: ['actimeo=1', 'nolock']
+                config.vm.synced_folder folder["map"], folder["to"], type: "nfs", :nfs_version => folder["nfs_version"] ||= 3, mount_options: ['actimeo=1', 'nolock']
             else
                 config.vm.synced_folder folder["map"], folder["to"], :owner => "vagrant", :group => "www-data", mount_options: ["dmode=775,fmode=775"]
             end
