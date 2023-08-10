@@ -11,7 +11,7 @@ settings = YAML.load_file(confDir + '/settings.yaml')
 Vagrant.require_version ">= 2.1.0"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-    config.vm.box = "bento/ubuntu-20.04"
+    config.vm.box = "debian/bullseye64"
 
     config.vm.provider :virtualbox do |vb|
         vb.memory = settings["memory"]
@@ -23,7 +23,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.customize ["modifyvm", :id, "--usbehci", "off"]
         vb.customize ["modifyvm", :id, "--uartmode1", "disconnected"]
         vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
-        vb.customize ["modifyvm", :id, "--ostype", "Ubuntu_64"]
+        vb.customize ["modifyvm", :id, "--ostype", "Debian_64"]
     end
 
     # Private Network IP
@@ -42,17 +42,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     if settings.has_key?("folders")
         settings["folders"].each do |folder|
-            if folder.has_key?("nfs") && folder["nfs"]
-                config.vm.synced_folder folder["map"], folder["to"], type: "nfs", :nfs_version => folder["nfs_version"] ||= 3, mount_options: ['actimeo=1', 'nolock']
-            else
-                config.vm.synced_folder folder["map"], folder["to"], :owner => "vagrant", :group => "www-data", mount_options: ["dmode=775,fmode=775"]
-            end
+            config.vm.synced_folder folder["map"], folder["to"], type: "nfs", :nfs_version => 4, nfs_udp: false
         end
     end
 
     # Provisions
 
-    config.vm.provision :shell, :args => [settings['mysql_user'] ||= "vagrant"], path: "scripts/provision.sh"
+    config.vm.provision :shell, path: "scripts/provision.sh"
 
     # Sites & Aliases
 
@@ -65,7 +61,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
                 end
                 aliases += " )"
             end
-            config.vm.provision :shell, :args => [site["map"], site["to"], aliases ||= "", site["php"] ||= "7.4"], path: "scripts/sites.sh"
+            config.vm.provision :shell, :args => [site["map"], site["to"], aliases ||= "", site["php"] ||= "8.2"], path: "scripts/sites.sh"
         end
 
         config.vm.provision :shell, inline: "service nginx restart"
