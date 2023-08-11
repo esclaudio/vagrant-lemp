@@ -75,7 +75,8 @@ if [ ! -f /home/vagrant/.provisioned/.php ] ; then
     
     mkdir /var/log/xdebug
     touch /var/log/xdebug/xdebug33.log
-    chown -R www-data:www-data /var/log/xdebug
+    chown -R vagrant:www-data /var/log/xdebug
+    chmod -R 775 /var/log/xdebug
 
     touch /home/vagrant/.provisioned/.php
 fi
