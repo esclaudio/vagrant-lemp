@@ -133,6 +133,9 @@ if [ ! -f /home/vagrant/.provisioned/.imagemagick ] ; then
     echo "Installing IMAGEMAGICK"
 
     apt-get install -yq imagemagick
+    
+    sed -i 's/<policy domain="coder" rights="none" pattern="PDF" \/>/<!-- <policy domain="coder" rights="none" pattern="PDF" \/>  -->/' /etc/ImageMagick-6/policy.xml
+
     touch /home/vagrant/.provisioned/.imagemagick
 fi
 
